@@ -1,0 +1,1 @@
+import  { type Anime } from '../../../app/services'
