@@ -46,7 +46,7 @@ const NavBar = () => {
                     "lg:relative lg:w-full lg:h-20"
                 }
                 ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
-                fixed lg:relative left-0 top-0 h-screen lg:h-auto w-72 lg:w-auto z-50`}>
+                fixed lg:relative left-0 top-0 h-screen lg:h-auto w-72 lg:w-50 z-50`}>
 
                 <nav className={`h-full flex flex-col
                     ${isVertical ? 
@@ -55,13 +55,7 @@ const NavBar = () => {
                     }
                     gap-8 p-6`}
                 >
-                    {/* Mobile Close Button */}
-                    <button
-                        onClick={() => setIsMobileMenuOpen(false)}
-                        className="lg:hidden absolute top-5 right-5 p-2 text-gray-600 hover:text-gray-800"
-                    >
-                        ✕
-                    </button>
+    
   
                     {/* Home Link */}
                     <div className="flex justify-center lg:justify-start mt-2 lg:mt-0">

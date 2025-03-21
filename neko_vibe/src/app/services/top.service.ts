@@ -13,13 +13,4 @@ export const TopService = {
     return data;
   },
 
-  getTopAiring: async (
-    page: number = 1,
-    limit: number = 10
-  ): Promise<{ data: Anime[]; pagination: Pagination }> => {
-    const { data } = await jikanClient.get('/top/anime', {
-      params: { filter: 'airing', page, limit }
-    });
-    return data;
-  }
 };
