@@ -2,11 +2,7 @@ import { AnimeService, Anime } from "../../services";
 import Image from 'next/image';
 import Link from 'next/link';
 
-export default async function AnimeDetailPage({
-  params,
-}: {
-  params: { id: string };
-}) {
+export default async function AnimeDetailPage({params,}: {params: Promise<{ id: string }>;}) {
 
   // For some reason, the await has no effet but if i don't put it here a error will be thrown!
   const  resolvedParams = await params;
