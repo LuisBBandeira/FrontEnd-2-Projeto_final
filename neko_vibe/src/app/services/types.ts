@@ -16,8 +16,14 @@ export interface Anime {
     };
     title: string;
     title_english?: string;
+    type: string;
     episodes?: number;
     status: string;
+    aired: {
+       from: string;
+       to: string;
+       string?: string;
+    };
     score?: number;
     synopsis?: string;
 }
