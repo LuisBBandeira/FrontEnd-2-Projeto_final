@@ -1,6 +1,7 @@
 import Layout from "../components/base/layout/Layout";
 import { TopService } from "./services"
-import TopAnimeCarousel from "../components/anime/Carousel/TopAnimeCarousel"
+import TopAnimeCarousel from "@/components/anime/Carousel/TopAnimeCarousel"
+import RecentlyUpdated from "@/components/anime/recently_updated/RecentlyUpdated";
 
 export default async function Home() {
   
@@ -10,6 +11,7 @@ export default async function Home() {
             <div className="bg-white h-full">
               <h2 className=" flex justify-center text-black text-2xl font-bold mb-6">Top 10 Anime</h2>
               <TopAnimeCarousel items={topAnime.slice(0, 10)} />
+              <RecentlyUpdated />
             </div>
         </Layout>
   );

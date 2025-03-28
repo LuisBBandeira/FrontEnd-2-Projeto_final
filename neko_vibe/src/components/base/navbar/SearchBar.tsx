@@ -1,20 +1,45 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { AnimeService, Anime } from '../../../app/services';
+import { useSearchParams } from 'next/navigation';
+import { AnimeService, type Anime } from '@/app/services';
 
-const SearchBar = ({
+interface SearchBarProps {
+  initialQuery?: string;
+  onSearch: (query: string) => void;
+  placeholder?: string;
+  className?: string;
+  showIcon?: boolean;
+}
+
+const SearchBar: React.FC<SearchBarProps> = ({
+  initialQuery = '',
+  onSearch,
   placeholder = "Search anime...",
   className = "",
   showIcon = true,
   ...props
 }) => {
-  const [query, setQuery] = useState('');
+  const searchParams = useSearchParams();
+  const [query, setQuery] = useState(initialQuery);
   const [results, setResults] = useState<Anime[]>([]);
 
-  // Debounce search input
+  const getParams = useCallback(() => ({
+    genres: searchParams.get('genres') || undefined,
+    type: searchParams.get('type') || undefined,
+    status: searchParams.get('status') || undefined,
+    season: searchParams.get('season') || undefined,
+    year: searchParams.get('year') || undefined,
+    order_by: searchParams.get('order_by') || undefined,
+    sort: searchParams.get('sort') || undefined,
+  }), [searchParams]);
+
+  useEffect(() => {
+    setQuery(initialQuery);
+  }, [initialQuery]);
+
   useEffect(() => {
     const searchAnime = async () => {
       if (query.length < 2) {
@@ -23,22 +48,26 @@ const SearchBar = ({
       }
 
       try {
-        const response = await AnimeService.search(query);
+        const response = await AnimeService.search(query, getParams());
         setResults(response.data || []);
       } catch (error) {
         console.error('Error fetching anime search results:', error);
       }
     };
 
-    const debounceTimer = setTimeout(() => {
-      searchAnime();
-    }, 300);
-
+    const debounceTimer = setTimeout(searchAnime, 300);
     return () => clearTimeout(debounceTimer);
-  }, [query]);
+  }, [query, getParams]);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (query.trim()) {
+      onSearch(query.trim());
+    }
+  };
 
   return (
-    <div className="relative w-full max-w-lg">
+    <form onSubmit={handleSubmit} className="relative w-full max-w-lg">
       <div className={`flex w-full ${className}`}>
         <div className="relative w-full">
           {showIcon && (
@@ -117,7 +146,7 @@ const SearchBar = ({
           ))}
         </div>
       )}
-    </div>
+    </form>
   );
 };
 
